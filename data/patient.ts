@@ -1,4 +1,4 @@
-import { toPatient } from '../src/utils';
+import { patientSchema } from '../src/utils';
 
 const data = [
   {
@@ -43,6 +43,6 @@ const data = [
   },
 ];
 
-const patientData = data.map((d) => toPatient(d));
+const patientData = data.map((d) => patientSchema.parse(d));
 
 export { patientData };

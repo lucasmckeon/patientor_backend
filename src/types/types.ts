@@ -1,3 +1,5 @@
+import { newPatientSchema, patientSchema } from '../utils';
+import { z } from 'zod';
 type Diagnosis = {
   code: string;
   name: string;
@@ -10,17 +12,8 @@ enum Gender {
   other = 'other',
 }
 
-type Patient = {
-  id: string;
-  name: string;
-  dateOfBirth: string;
-  ssn: string;
-  gender: Gender;
-  occupation: string;
-};
-
-type NewPatient = Omit<Patient, 'id'>;
-
+type Patient = z.infer<typeof patientSchema>;
+type NewPatient = z.infer<typeof newPatientSchema>;
 type NonSensitivePatientData = Omit<Patient, 'ssn'>;
 
 export { Diagnosis, Patient, NonSensitivePatientData, NewPatient, Gender };
