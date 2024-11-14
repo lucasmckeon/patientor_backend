@@ -1,7 +1,14 @@
 import express, { Request } from 'express';
-import { NewPatient, NonSensitivePatientData, Patient } from '../types/types';
+import {
+  Entry,
+  NewEntry,
+  NewPatient,
+  NonSensitivePatientData,
+  Patient,
+} from '../types/types';
 import { Response } from 'express';
 import {
+  addEntryToPatient,
   addPatients,
   findById,
   getNonSensitivePatientData,
@@ -21,11 +28,20 @@ patientsRouter.get('/:id', (req, res: Response<Patient>) => {
 patientsRouter.post(
   '/',
   newPatientMiddleware,
-  (req: Request<unknown, unknown, NewPatient>, res) => {
+  (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
     console.log('POST: ', req.body);
     const newPatient: NewPatient = req.body;
     const patient = addPatients(newPatient);
     res.json(patient);
+  }
+);
+
+patientsRouter.post(
+  '/:id/entries',
+  (req: Request<{ id: string }, unknown, NewEntry>, res: Response<Entry>) => {
+    const id = req.params.id;
+    const entry = addEntryToPatient(id, req.body);
+    res.json(entry);
   }
 );
 
